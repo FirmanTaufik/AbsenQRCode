@@ -1,7 +1,24 @@
 package com.app.myapplication.helper;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.app.myapplication.Model.Mahasiswa;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Utils {
     private static SharedPreferences mySharedPreferences;
@@ -20,6 +37,70 @@ public class Utils {
         return mySharedPreferences.getString(IDUSER, null);
         // return "1";
     }
- 
 
+
+
+    private static String AllMAHASISWAJSON= "AllMAHASISWAJSON";
+
+    public static void setAllMahasiswaJson(Context context, String id){
+        mySharedPreferences = context.getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor myEditor = mySharedPreferences.edit();
+        myEditor.putString(AllMAHASISWAJSON, id);
+        myEditor.commit();
+    }
+
+    public static String getAllMahasiswaJson(Context context){
+        mySharedPreferences = context.getSharedPreferences(PREF, 0);
+        return mySharedPreferences.getString(AllMAHASISWAJSON, null);
+        // return "1";
+    }
+
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public static Mahasiswa getMahasiswa(String id){
+        Type listType = new TypeToken<List<Mahasiswa>>() {}.getType();
+        ArrayList<Mahasiswa> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
+        for (Mahasiswa mahasiswa: list ) {
+            if (Objects.equals(id, mahasiswa.getIdMhs())) {
+                return mahasiswa;
+            }
+        }
+        return new Mahasiswa();
+    }
+
+
+    public static void dialogDate(Context context, EditText editText){
+        Calendar newDate = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog( context, (view1, year, month, dayOfMonth) -> {
+            newDate.set(year, month, dayOfMonth);
+
+            editText.setText(changeFromDate(newDate.getTime()));
+
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    public static String changeFromDate(Date date){
+        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormater.format(date);
+    }
+
+    public static void dialogConfirmation(Context context, SweetAlertDialog.OnSweetClickListener onSweetClickListener){
+        SweetAlertDialog sweetAlertDialog =  new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setTitleText("Informasi");
+        sweetAlertDialog.setContentText("Anda yakin?");
+        sweetAlertDialog.setConfirmText("Iya");
+        sweetAlertDialog.setConfirmClickListener(onSweetClickListener);
+        sweetAlertDialog.setCancelButton("Batal", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                sDialog.dismissWithAnimation();
+            }
+        });
+        sweetAlertDialog.show();
+    }
 }

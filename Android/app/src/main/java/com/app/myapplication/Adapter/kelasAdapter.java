@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.myapplication.Model.Home;
 import com.app.myapplication.R;
+import com.app.myapplication.ui.KelasActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,10 @@ public class kelasAdapter extends RecyclerView.Adapter<kelasAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             /*   Intent intent = new Intent(context, KelasActivity.class);
+              Intent intent = new Intent(context, KelasActivity.class);
                 intent.putExtra("idKelas",listKelas.get(position).getIdKelas() );
-                context.startActivity(intent);*/
+                intent.putExtra("idMk",listKelas.get(position).getIdMk() );
+                context.startActivity(intent);
             }
         });
     }
