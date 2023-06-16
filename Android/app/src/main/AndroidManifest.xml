@@ -8,7 +8,6 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
     <application
         android:name=".helper.App"
         android:allowBackup="true"
@@ -21,6 +20,9 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.RekapActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.AbsenActivity"
             android:exported="false" />

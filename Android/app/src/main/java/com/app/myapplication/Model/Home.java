@@ -1,5 +1,10 @@
 package com.app.myapplication.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -88,7 +93,7 @@ public class Home {
         }
 
     }
-    public class Mengajar {
+    public static  class Mengajar implements Parcelable {
 
         @SerializedName("id_mk")
         @Expose
@@ -111,6 +116,28 @@ public class Home {
         @SerializedName("nama_kelas")
         @Expose
         private String namaKelas;
+
+        protected Mengajar(Parcel in) {
+            idMk = in.readString();
+            namaMk = in.readString();
+            kodeMk = in.readString();
+            idDosen = in.readString();
+            namaDosen = in.readString();
+            idKelas = in.readString();
+            namaKelas = in.readString();
+        }
+
+        public static final Creator<Mengajar> CREATOR = new Creator<Mengajar>() {
+            @Override
+            public Mengajar createFromParcel(Parcel in) {
+                return new Mengajar(in);
+            }
+
+            @Override
+            public Mengajar[] newArray(int size) {
+                return new Mengajar[size];
+            }
+        };
 
         public String getIdMk() {
             return idMk;
@@ -168,5 +195,20 @@ public class Home {
             this.namaKelas = namaKelas;
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel dest, int flags) {
+            dest.writeString(idMk);
+            dest.writeString(namaMk);
+            dest.writeString(kodeMk);
+            dest.writeString(idDosen);
+            dest.writeString(namaDosen);
+            dest.writeString(idKelas);
+            dest.writeString(namaKelas);
+        }
     }
 }

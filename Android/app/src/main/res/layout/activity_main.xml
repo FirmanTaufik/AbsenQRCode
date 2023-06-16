@@ -32,8 +32,7 @@
             android:layout_height="match_parent"/>
 
         <RelativeLayout
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="35dp"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
@@ -41,7 +40,7 @@
 
             <LinearLayout
                 android:id="@+id/lProfil"
-                android:layout_toLeftOf="@+id/imgLogout"
+                android:layout_toLeftOf="@+id/imgRekap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -63,12 +62,16 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/txtNama"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         style="@style/TextAppearance.AppCompat.SearchResult.Title"
                          android:textColor="?android:attr/colorBackground"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/txtNidn"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         style="@style/TextAppearance.AppCompat.Body1"
                          android:textColor="?android:attr/colorBackground"
                         android:layout_width="match_parent"
@@ -77,6 +80,22 @@
             </LinearLayout>
 
             <ImageButton
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/imgRekap"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/baseline_wysiwyg_24"
+                android:layout_toLeftOf="@id/imgLogout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <ImageButton
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:onClick="logout"
                 android:id="@+id/imgLogout"
                 android:layout_centerVertical="true"

@@ -1,13 +1,18 @@
 package com.app.myapplication.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.myapplication.Model.DetailKelas;
@@ -21,6 +26,9 @@ public class PertemuanAdapter extends RecyclerView.Adapter<PertemuanAdapter.View
 
     public interface Listener{
         void ItemClick(DetailKelas.Pertemuan pertemuan);
+        void onEdit(int position);
+        void OnDelete(int position);
+
     }
 
     private Listener listener;
@@ -41,6 +49,7 @@ public class PertemuanAdapter extends RecyclerView.Adapter<PertemuanAdapter.View
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtNama.setText("Pertemuan "+list.get(position).getPertemuan());
@@ -51,7 +60,26 @@ public class PertemuanAdapter extends RecyclerView.Adapter<PertemuanAdapter.View
                 listener.ItemClick(list.get(position));
             }
         });
-        holder.img_delete.setVisibility(View.GONE);
+        holder.img_delete.setColorFilter(ContextCompat.getColor(context, R.color.green_200), android.graphics.PorterDuff.Mode.SRC_IN);
+        holder.img_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context,    holder.img_delete);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId()==R.id.edit) listener.onEdit(position);
+                        else listener.OnDelete(position);
+                        return true;
+                    }
+                });
+                // Showing the popup menu
+                popupMenu.show();
+            }
+        });
+
+        holder.img_delete.setImageResource(R.drawable.baseline_more_vert_24);
     }
 
     @Override

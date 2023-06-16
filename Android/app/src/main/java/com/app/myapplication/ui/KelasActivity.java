@@ -6,11 +6,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.app.myapplication.Adapter.PertemuanAdapter;
 import com.app.myapplication.Model.DetailKelas;
+import com.app.myapplication.Model.Post;
 import com.app.myapplication.Retrofit.ApiClient;
 import com.app.myapplication.Retrofit.GetService;
 import com.app.myapplication.databinding.ActivityKelasBinding;
@@ -24,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class KelasActivity extends AppCompatActivity {
+    private String TAG ="KelasActivityTAG";
     private ActivityKelasBinding binding;
 
     @Override
@@ -50,7 +53,6 @@ public class KelasActivity extends AppCompatActivity {
     }
 
     private void dialogAddPertemuan() {
-    /*    View view1 = LayoutInflater.from(this).inflate(R.layout.form_user,null  );*/
         FormAddEditPertemuanBinding view1 = FormAddEditPertemuanBinding.inflate( getLayoutInflater());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view1.getRoot());
@@ -119,7 +121,91 @@ public class KelasActivity extends AppCompatActivity {
                 intent.putExtra("isEdit",true);
                 startActivity(intent);
             }
+
+            @Override
+            public void onEdit(int position) {
+                StringBuilder ids = new StringBuilder();
+                for (int i = 0; i < pertemuans.get(position).getAbsen().size(); i++) {
+                    if (i == pertemuans.get(position).getAbsen().size() - 1) ids.append(pertemuans.get(position).getAbsen().get(i).getIdPresensi());
+                    else ids.append(pertemuans.get(position).getAbsen().get(i).getIdPresensi() + ",");
+                }
+                String Tanggal = pertemuans.get(position).getTanggal();
+                String Pertemuan = pertemuans.get(position).getPertemuan();
+                postEdit(ids.toString(),Tanggal, Pertemuan);
+            }
+
+            @Override
+            public void OnDelete(int position) {
+                String idMk = pertemuans.get(position).getIdMk();
+                String Pertemuan = pertemuans.get(position).getPertemuan();
+                Utils.dialogConfirmation(KelasActivity.this, sDialog -> {
+                    sDialog.dismissWithAnimation();
+                    ApiClient.getRetrofitInstance().create(GetService.class)
+                            .deletePertemuan(Pertemuan, idMk)
+                            .enqueue(new Callback<Post>() {
+                                @Override
+                                public void onResponse(Call<Post> call, Response<Post> response) {
+                                    if (response.body().getSucces().equals("1")) {
+                                        getData();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Post> call, Throwable t) {
+                                    Log.d(TAG, "onFailure: "+t.getMessage());
+
+                                }
+                            });
+                });
+
+
+            }
         });
 
+    }
+
+    private void postEdit(String ids, String tanggal, String pertemuan) {
+        FormAddEditPertemuanBinding view1 = FormAddEditPertemuanBinding.inflate( getLayoutInflater());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view1.getRoot());
+        view1.edtTgl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.dialogDate(KelasActivity.this, view1.edtTgl);
+            }
+        });
+        view1.edtTgl.setText(tanggal);
+        view1.edtPertemuan.setText(pertemuan);
+        builder.setPositiveButton("Simpan", null);
+        builder.setNegativeButton("Cancel", null);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                      ApiClient.getRetrofitInstance().create(GetService.class)
+                              .editAbsen( view1.edtPertemuan.getText().toString(),  view1.edtTgl.getText().toString(), ids)
+                              .enqueue(new Callback<Post>() {
+                                  @Override
+                                  public void onResponse(Call<Post> call, Response<Post> response) {
+                                      if (response.body().getSucces().equals("1")) {
+                                          getData();
+                                          mAlertDialog.dismiss();
+                                      }
+                                  }
+
+                                  @Override
+                                  public void onFailure(Call<Post> call, Throwable t) {
+                                      Log.d(TAG, "onFailure: "+t.getMessage());
+                                  }
+                              });
+                    }
+                });
+            }
+        });
+        mAlertDialog.show();
     }
 }

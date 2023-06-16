@@ -186,23 +186,24 @@ public class AbsenActivity extends AppCompatActivity {
             for (int i = 0; i < list.size(); i++) {
                 if (i == list.size() - 1) stringBuilder.append(list.get(i).getIdMhs());
                 else stringBuilder.append(list.get(i).getIdMhs() + ",");
-                ApiClient.getRetrofitInstance().create(GetService.class)
-                        .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString())
-                        .enqueue(new Callback<Post>() {
-                            @Override
-                            public void onResponse(Call<Post> call, Response<Post> response) {
-                                if (response.isSuccessful()) {
-                                    Utils.showToast(AbsenActivity.this, response.message());
-                                    finish();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Post> call, Throwable t) {
-                                Log.d(TAG, "onFailure: " + t.getMessage());
-                            }
-                        });
             }
+            ApiClient.getRetrofitInstance().create(GetService.class)
+                    .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString())
+                    .enqueue(new Callback<Post>() {
+                        @Override
+                        public void onResponse(Call<Post> call, Response<Post> response) {
+                            if (response.isSuccessful()) {
+                                Utils.showToast(AbsenActivity.this, response.message());
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Post> call, Throwable t) {
+                            Log.d(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+
 
         }
     }

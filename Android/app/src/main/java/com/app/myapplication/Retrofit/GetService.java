@@ -1,12 +1,11 @@
 package com.app.myapplication.Retrofit;
 
 
-
-
 import com.app.myapplication.Model.Absen;
 import com.app.myapplication.Model.DetailKelas;
 import com.app.myapplication.Model.Home;
 import com.app.myapplication.Model.Post;
+import com.app.myapplication.Model.Rekap;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ import retrofit2.http.Query;
 public interface GetService {
 
 
-
     @POST("login.php")
     @FormUrlEncoded
     Call<Post> postLogin(@FieldMap HashMap<String, String> params);
@@ -32,7 +30,7 @@ public interface GetService {
     Call<Home> getHome(@Query("id_dosen") String id_dosen);
 
     @GET("all_mahasiswa.php")
-    Call<String> getAllMahasiswa( );
+    Call<String> getAllMahasiswa();
 
 
     @GET("kelas.php")
@@ -45,7 +43,27 @@ public interface GetService {
                          @Field("Tanggal") String Tanggal,
                          @Field("Id_mk") String Id_mk,
                          @Field("Jsonlist") String jsonlist);
+
     @GET("absen.php")
     Call<List<Absen>> getAbsen(@Query("pertemuan") String pertemuan,
-                         @Query("idMk") String idMk);
+                               @Query("idMk") String idMk);
+
+
+    @POST("edit_pertemuan.php")
+    @FormUrlEncoded
+    Call<Post> editAbsen(@Field("Pertemuan") String pertemuan,
+                         @Field("Tanggal") String Tanggal,
+                         @Field("Jsonlist") String jsonlist);
+
+
+    @POST("delete_pertemuan.php")
+    @FormUrlEncoded
+    Call<Post> deletePertemuan(@Field("Pertemuan") String pertemuan,
+                               @Field("idMk") String idMk);
+
+    @GET("rekap.php")
+    Call<List<Rekap>> getRekap(
+            @Query("idMk") String idMk,
+            @Query("date1") String date1,
+            @Query("date2") String date2);
 }

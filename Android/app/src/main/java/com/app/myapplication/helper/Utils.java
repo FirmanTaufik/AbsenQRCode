@@ -1,12 +1,23 @@
 package com.app.myapplication.helper;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.core.util.Pair;
+import androidx.fragment.app.FragmentManager;
+
 import com.app.myapplication.Model.Mahasiswa;
+import com.app.myapplication.R;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -102,5 +113,27 @@ public class Utils {
             }
         });
         sweetAlertDialog.show();
+    }
+
+    public static void showDateRange(FragmentManager supportFragmentManager, MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>> materialPickerOnPositiveButtonClickListener){
+        MaterialDatePicker<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker(). build() ;
+        builder.addOnPositiveButtonClickListener(materialPickerOnPositiveButtonClickListener);
+        builder.show(supportFragmentManager, "Pilih Tanggal");
+    }
+
+    public static String longTOyyyyMMdd(Long lastmodified){
+        Date lm = new Date(lastmodified);
+        String lasmod = new SimpleDateFormat("yyyy-MM-dd").format(lm);
+        return lasmod;
+    }
+
+    public static void createWebPrintJob(WebView webView, Activity activity) {
+        PrintManager printManager = (PrintManager) activity.getSystemService(Context.PRINT_SERVICE);
+
+        String jobName =activity.getString(R.string.app_name) ;
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(jobName);
+        PrintAttributes.Builder builder = new PrintAttributes.Builder();
+        builder.setMediaSize(PrintAttributes.MediaSize.NA_GOVT_LETTER);
+        printManager.print(jobName, printAdapter,builder.build());
     }
 }

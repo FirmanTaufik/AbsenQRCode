@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +17,9 @@ import com.app.myapplication.Retrofit.ApiClient;
 import com.app.myapplication.Retrofit.GetService;
 import com.app.myapplication.databinding.ActivityMainBinding;
 import com.app.myapplication.helper.Utils;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getData();
+
     }
 
     private void getData() {
@@ -56,12 +60,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setMengajar(List<Home.Mengajar> mengajar) {
+        binding.imgRekap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String json = new Gson().toJson(mengajar);
+                Intent intent = new Intent(MainActivity.this, RekapActivity.class);
+                intent.putExtra("json",json);
+                intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) mengajar);
+                startActivity(intent);
+            }
+        });
         binding.recyclerView.setAdapter(new kelasAdapter(this, mengajar));
     }
 
     private void setProfile(Home.Profile profile) {
         binding.txtNama.setText(profile.getNamaDosen());
-        binding.txtNidn.setText(profile.getNidn());
+        binding.txtNidn.setText("NIDN : "+profile.getNidn());
     }
 
 
