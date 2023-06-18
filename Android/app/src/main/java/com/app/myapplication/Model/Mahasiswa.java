@@ -21,7 +21,7 @@ public class Mahasiswa {
     private String jurusan;
     @SerializedName("Foto")
     @Expose
-    private Object foto;
+    private String foto;
 
     public String getIdMhs() {
         return idMhs;
@@ -63,11 +63,11 @@ public class Mahasiswa {
         this.jurusan = jurusan;
     }
 
-    public Object getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(Object foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }

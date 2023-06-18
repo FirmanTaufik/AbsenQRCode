@@ -1,8 +1,12 @@
 package com.app.myapplication.ui;
 
+import static com.app.myapplication.Retrofit.ApiClient.BASE_URL_IMAGE;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +22,7 @@ import com.app.myapplication.R;
 import com.app.myapplication.Retrofit.ApiClient;
 import com.app.myapplication.Retrofit.GetService;
 import com.app.myapplication.databinding.ActivityAbsenBinding;
+import com.app.myapplication.databinding.DialogMahasiswaBinding;
 import com.app.myapplication.helper.Utils;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -99,6 +104,24 @@ public class AbsenActivity extends AppCompatActivity {
                     list.remove(position);
                     mahasiswaAdapter.notifyDataSetChanged();
                 });
+            }
+
+            @Override
+            public void ShowProfile(Mahasiswa data) {
+                data = Utils.getMahasiswa(data.getIdMhs());
+                DialogMahasiswaBinding view = DialogMahasiswaBinding.inflate(getLayoutInflater());
+                AlertDialog.Builder builder = new AlertDialog.Builder(AbsenActivity.this);
+                builder.setView(view.getRoot());
+                if (data.getFoto() == null || data.getFoto().equals("null"))
+                    view.image.setImageResource(R.drawable.ic_person);
+                else Utils.loadImage(BASE_URL_IMAGE+data.getFoto(), view.image);
+
+                view.textViewTanggalLahir.setText(data.getTempatTglLhr());
+                view.textViewNama.setText(data.getNama());
+                view.textViewNim.setText("NIM : "+data.getNim());
+                view.textViewJurusan.setText(data.getJurusan());
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.show();
             }
         });
     }

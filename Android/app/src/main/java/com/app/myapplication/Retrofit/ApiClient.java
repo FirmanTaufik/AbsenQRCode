@@ -25,6 +25,7 @@ public class ApiClient {
     public static Context context = App.getContext();
     public static Retrofit retrofit;
     public static   String BASE_URL = "http://192.168.8.161/AbsenQRCode/";
+    public static   String BASE_URL_IMAGE = BASE_URL+"images/";
 
     public static Retrofit getRetrofitInstance() {
         Gson gson = new GsonBuilder()

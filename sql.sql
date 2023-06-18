@@ -22,12 +22,13 @@ CREATE TABLE IF NOT EXISTS `tb_dosen` (
   `NIDN` int NOT NULL DEFAULT '0',
   `Nama_dosen` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_dosen`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_dosen: ~1 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_dosen: ~2 rows (approximately)
 DELETE FROM `tb_dosen`;
 INSERT INTO `tb_dosen` (`id_dosen`, `Username`, `Password`, `NIDN`, `Nama_dosen`) VALUES
-	(1, 'dosen', 'ce28eed1511f631af6b2a7bb0a85d636', 1, 'dosen');
+	(1, 'dosen', 'ce28eed1511f631af6b2a7bb0a85d636', 1, 'dosen'),
+	(2, 'dosen2', 'ac41c4e0e6ef7ac51f0c8f3895f82ce5', 1, 'dosen2');
 
 -- Dumping structure for table db_absen_qrcode.tb_kelas
 CREATE TABLE IF NOT EXISTS `tb_kelas` (
@@ -35,12 +36,13 @@ CREATE TABLE IF NOT EXISTS `tb_kelas` (
   `Nama_Kelas` varchar(50) NOT NULL DEFAULT '0',
   `Tahun_ajaran` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kelas`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_kelas: ~0 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_kelas: ~2 rows (approximately)
 DELETE FROM `tb_kelas`;
 INSERT INTO `tb_kelas` (`id_kelas`, `Nama_Kelas`, `Tahun_ajaran`) VALUES
-	(1, '1B', '2023');
+	(1, '1B', '2023'),
+	(2, '2B', '2023');
 
 -- Dumping structure for table db_absen_qrcode.tb_mhs
 CREATE TABLE IF NOT EXISTS `tb_mhs` (
@@ -53,10 +55,10 @@ CREATE TABLE IF NOT EXISTS `tb_mhs` (
   PRIMARY KEY (`id_mhs`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_mhs: ~0 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_mhs: ~3 rows (approximately)
 DELETE FROM `tb_mhs`;
 INSERT INTO `tb_mhs` (`id_mhs`, `NIM`, `Nama`, `Tempat_Tgl_Lhr`, `Jurusan`, `Foto`) VALUES
-	(1, 111, 'Dadang', '2001-06-14', 'Teknik Mesin', NULL),
+	(1, 111, 'Dadang', '2001-06-14', 'Teknik Mesin', '1.jpg'),
 	(2, 222, 'Nisa', '2001-05-17', 'Teknik Mesin', NULL),
 	(3, 333, 'Heri', '2001-07-18', 'Hukum', NULL);
 
@@ -68,12 +70,14 @@ CREATE TABLE IF NOT EXISTS `tb_mk` (
   `id_dosen` int DEFAULT NULL,
   `id_kelas` int DEFAULT NULL,
   PRIMARY KEY (`id_mk`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_mk: ~1 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_mk: ~3 rows (approximately)
 DELETE FROM `tb_mk`;
 INSERT INTO `tb_mk` (`id_mk`, `Nama_mk`, `Kode_mk`, `id_dosen`, `id_kelas`) VALUES
-	(1, 'Bahasa Inggris', '1', 1, 1);
+	(1, 'Bahasa Inggris', '1', 1, 1),
+	(2, 'Kalkulus', '222314414', 1, 2),
+	(3, 'Ilmu Komputer', '121434425', 2, 1);
 
 -- Dumping structure for table db_absen_qrcode.tb_presensi
 CREATE TABLE IF NOT EXISTS `tb_presensi` (
@@ -83,10 +87,13 @@ CREATE TABLE IF NOT EXISTS `tb_presensi` (
   `Id_mk` int DEFAULT NULL,
   `Id_mhs` int DEFAULT NULL,
   PRIMARY KEY (`id_presensi`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_presensi: ~0 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_presensi: ~2 rows (approximately)
 DELETE FROM `tb_presensi`;
+INSERT INTO `tb_presensi` (`id_presensi`, `Pertemuan`, `Tanggal`, `Id_mk`, `Id_mhs`) VALUES
+	(19, 3, '2023-06-16', 1, 2),
+	(20, 3, '2023-06-16', 1, 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
