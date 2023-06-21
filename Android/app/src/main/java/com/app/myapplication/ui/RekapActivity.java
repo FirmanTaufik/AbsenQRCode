@@ -55,9 +55,10 @@ public class RekapActivity extends AppCompatActivity {
     private void initUi() {
         Type listType = new TypeToken<List<Home.Mengajar>>(){}.getType();
         ArrayList<Home.Mengajar> list = new Gson().fromJson(getIntent().getStringExtra("json"),listType );
-        String[] item =  {"1"};
+        String[] item =   new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            item[i] = list.get(i).getNamaMk() +" "+list.get(i).getNamaKelas();
+            Log.d(TAG, "initUi: "+ list.get(i).getNamaMk() +" "+list.get(i).getNamaKelas());
+             item[i] = list.get(i).getNamaMk() +" "+list.get(i).getNamaKelas();
         }
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,item);
         binding.edtPertemuan.setAdapter(adapter);

@@ -19,14 +19,14 @@ order by tb_presensi.Pertemuan  desc";
 $w = mysqli_query($conn, $query);
 $data = array();
 while ($row = mysqli_fetch_object($w)) {
-
-    $w = mysqli_query($conn, "SELECT  tb_presensi.*, tb_mhs.id_mhs, tb_mhs.NIM,tb_mhs.Nama
+ 
+    $m = mysqli_query($conn, "SELECT  tb_presensi.*, tb_mhs.id_mhs, tb_mhs.NIM,tb_mhs.Nama
     FROM tb_presensi
     LEFT JOIN tb_mhs ON tb_mhs.id_mhs = tb_presensi.Id_mhs
     where pertemuan = '$row->Pertemuan' and Id_mk = '$row->Id_mk'
      ORDER BY tb_presensi.id_presensi desc    ");
     $ids = array();
-    while ($result = mysqli_fetch_object($w)) { 
+    while ($result = mysqli_fetch_object($m)) { 
        $ids[] = $result; 
     }
 
@@ -34,7 +34,7 @@ while ($row = mysqli_fetch_object($w)) {
     $object->Pertemuan = $row->Pertemuan;
     $object->Tanggal = $row->Tanggal;
     $object->Id_mk = $row->Id_mk;
-    $object->Absen =  $ids;
+     $object->Absen =  $ids;
 
     array_push($data, $object);
 }
@@ -44,7 +44,7 @@ $object->kelas = $id;
 $object->mengajar = $mengajar;
 $object->pertemuan = $data;
 
-echo json_encode($object);
+ echo json_encode($object);
 
 
 // mysqli_close($conn);
