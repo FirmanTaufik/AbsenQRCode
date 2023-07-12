@@ -15,6 +15,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for table db_absen_qrcode.tb_dosen
+DROP TABLE IF EXISTS `tb_dosen`;
 CREATE TABLE IF NOT EXISTS `tb_dosen` (
   `id_dosen` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(50) NOT NULL DEFAULT '0',
@@ -31,6 +32,7 @@ INSERT INTO `tb_dosen` (`id_dosen`, `Username`, `Password`, `NIDN`, `Nama_dosen`
 	(2, 'dosen2', 'ac41c4e0e6ef7ac51f0c8f3895f82ce5', 1, 'dosen2');
 
 -- Dumping structure for table db_absen_qrcode.tb_kelas
+DROP TABLE IF EXISTS `tb_kelas`;
 CREATE TABLE IF NOT EXISTS `tb_kelas` (
   `id_kelas` int NOT NULL AUTO_INCREMENT,
   `Nama_Kelas` varchar(50) NOT NULL DEFAULT '0',
@@ -45,6 +47,7 @@ INSERT INTO `tb_kelas` (`id_kelas`, `Nama_Kelas`, `Tahun_ajaran`) VALUES
 	(2, '2B', '2023');
 
 -- Dumping structure for table db_absen_qrcode.tb_mhs
+DROP TABLE IF EXISTS `tb_mhs`;
 CREATE TABLE IF NOT EXISTS `tb_mhs` (
   `id_mhs` int NOT NULL AUTO_INCREMENT,
   `NIM` int DEFAULT '0',
@@ -52,48 +55,52 @@ CREATE TABLE IF NOT EXISTS `tb_mhs` (
   `Tempat_Tgl_Lhr` date DEFAULT NULL,
   `Jurusan` varchar(50) DEFAULT NULL,
   `Foto` text,
+  `id_kelas` int DEFAULT NULL,
   PRIMARY KEY (`id_mhs`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_absen_qrcode.tb_mhs: ~3 rows (approximately)
 DELETE FROM `tb_mhs`;
-INSERT INTO `tb_mhs` (`id_mhs`, `NIM`, `Nama`, `Tempat_Tgl_Lhr`, `Jurusan`, `Foto`) VALUES
-	(1, 111, 'Dadang', '2001-06-14', 'Teknik Mesin', '1.jpg'),
-	(2, 222, 'Nisa', '2001-05-17', 'Teknik Mesin', NULL),
-	(3, 333, 'Heri', '2001-07-18', 'Hukum', NULL);
+INSERT INTO `tb_mhs` (`id_mhs`, `NIM`, `Nama`, `Tempat_Tgl_Lhr`, `Jurusan`, `Foto`, `id_kelas`) VALUES
+	(1, 111, 'Dadang', '2001-06-14', 'Teknik Mesin', '1.jpg', 1),
+	(2, 222, 'Nisa', '2001-05-17', 'Teknik Mesin', NULL, 1),
+	(3, 333, 'Heri', '2001-07-18', 'Hukum', NULL, 2);
 
 -- Dumping structure for table db_absen_qrcode.tb_mk
+DROP TABLE IF EXISTS `tb_mk`;
 CREATE TABLE IF NOT EXISTS `tb_mk` (
   `id_mk` int NOT NULL AUTO_INCREMENT,
   `Nama_mk` varchar(50) NOT NULL DEFAULT '',
   `Kode_mk` varchar(50) DEFAULT NULL,
   `id_dosen` int DEFAULT NULL,
-  `id_kelas` int DEFAULT NULL,
   PRIMARY KEY (`id_mk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_absen_qrcode.tb_mk: ~3 rows (approximately)
 DELETE FROM `tb_mk`;
-INSERT INTO `tb_mk` (`id_mk`, `Nama_mk`, `Kode_mk`, `id_dosen`, `id_kelas`) VALUES
-	(1, 'Bahasa Inggris', '1', 1, 1),
-	(2, 'Kalkulus', '222314414', 1, 2),
-	(3, 'Ilmu Komputer', '121434425', 2, 1);
+INSERT INTO `tb_mk` (`id_mk`, `Nama_mk`, `Kode_mk`, `id_dosen`) VALUES
+	(1, 'Bahasa Inggris', '1', 1),
+	(2, 'Kalkulus', '222314414', 1),
+	(3, 'Ilmu Komputer', '121434425', 2);
 
 -- Dumping structure for table db_absen_qrcode.tb_presensi
+DROP TABLE IF EXISTS `tb_presensi`;
 CREATE TABLE IF NOT EXISTS `tb_presensi` (
   `id_presensi` int NOT NULL AUTO_INCREMENT,
   `Pertemuan` int DEFAULT NULL,
   `Tanggal` date DEFAULT NULL,
   `Id_mk` int DEFAULT NULL,
   `Id_mhs` int DEFAULT NULL,
+  `Id_kelas` int DEFAULT NULL,
   PRIMARY KEY (`id_presensi`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_absen_qrcode.tb_presensi: ~2 rows (approximately)
+-- Dumping data for table db_absen_qrcode.tb_presensi: ~3 rows (approximately)
 DELETE FROM `tb_presensi`;
-INSERT INTO `tb_presensi` (`id_presensi`, `Pertemuan`, `Tanggal`, `Id_mk`, `Id_mhs`) VALUES
-	(19, 3, '2023-06-16', 1, 2),
-	(20, 3, '2023-06-16', 1, 1);
+INSERT INTO `tb_presensi` (`id_presensi`, `Pertemuan`, `Tanggal`, `Id_mk`, `Id_mhs`, `Id_kelas`) VALUES
+	(25, 1, '2023-07-12', 2, 3, 2),
+	(27, 1, '2023-07-12', 1, 1, 1),
+	(28, 1, '2023-07-12', 1, 2, 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
