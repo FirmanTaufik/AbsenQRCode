@@ -9,6 +9,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.core.util.Pair;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.app.myapplication.Model.Mahasiswa;
 import com.app.myapplication.R;
+import com.bumptech.glide.Glide;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.gson.Gson;
@@ -71,12 +73,14 @@ public class Utils {
     }
 
 
-    public static Mahasiswa getMahasiswa(String id){
+    public static Mahasiswa getMahasiswa(String id, String idKelas){
         Type listType = new TypeToken<List<Mahasiswa>>() {}.getType();
         ArrayList<Mahasiswa> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
         for (Mahasiswa mahasiswa: list ) {
             if (Objects.equals(id, mahasiswa.getIdMhs())) {
-                return mahasiswa;
+                if (Objects.equals(idKelas, mahasiswa.getIdKelas())) {
+                    return mahasiswa;
+                }
             }
         }
         return new Mahasiswa();
@@ -135,5 +139,11 @@ public class Utils {
         PrintAttributes.Builder builder = new PrintAttributes.Builder();
         builder.setMediaSize(PrintAttributes.MediaSize.NA_GOVT_LETTER);
         printManager.print(jobName, printAdapter,builder.build());
+    }
+
+
+    public static void loadImage(String url, ImageView imageView){
+        Glide.with(App.getContext())
+                .load(url).into(imageView);
     }
 }

@@ -45,7 +45,7 @@ public class PertemuanAdapter extends RecyclerView.Adapter<PertemuanAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_mahasiswa, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_pertemuan, parent, false);
         return new ViewHolder(view);
     }
 

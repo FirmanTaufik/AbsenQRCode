@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.app.myapplication.Adapter.kelasAdapter;
+import com.app.myapplication.Adapter.KelasAdapter;
+import com.app.myapplication.Adapter.MkAdapter;
 import com.app.myapplication.Model.Home;
 import com.app.myapplication.R;
 import com.app.myapplication.Retrofit.ApiClient;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<Home> call, Response<Home> response) {
                         if (response.isSuccessful()){
                             setProfile(response.body().getProfile());
-                            setMengajar(response.body().getMengajar());
+                            setMengajar(response.body().getMengajar(), response.body().getKelas());
                         }
                         binding.spinKit.setVisibility(View.GONE);
                     }
@@ -59,18 +62,62 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void setMengajar(List<Home.Mengajar> mengajar) {
+    private void setMengajar(List<Home.Mengajar> mengajar, List<Home.Kela> kelas) {
         binding.imgRekap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String json = new Gson().toJson(mengajar);
+                PopupMenu popupMenu = new PopupMenu(v.getContext(),    binding.imgRekap);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu_2, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId()==R.id.rekap_tanggal)  {
+                            String json = new Gson().toJson(mengajar);
+                            String jsonKelas = new Gson().toJson(kelas);
+                            Intent intent = new Intent(MainActivity.this, RekapActivity.class);
+                            intent.putExtra("json",json);
+                            intent.putExtra("jsonKelas",jsonKelas);
+                            intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) mengajar);
+                            startActivity(intent);
+                        }
+                        else  {
+
+                            String json = new Gson().toJson(mengajar);
+                            String jsonKelas = new Gson().toJson(kelas);
+                            Intent intent = new Intent(MainActivity.this, RekapActivity.class);
+                            intent.putExtra("json",json);
+                            intent.putExtra("jsonKelas",jsonKelas);
+                            intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) mengajar);
+                            intent.putExtra("isRekapPertemuan", true);
+                            startActivity(intent);
+                        }
+                        return true;
+                    }
+                });
+                // Showing the popup menu
+                popupMenu.show();
+
+               /* String json = new Gson().toJson(mengajar);
+                String jsonKelas = new Gson().toJson(kelas);
                 Intent intent = new Intent(MainActivity.this, RekapActivity.class);
                 intent.putExtra("json",json);
+                intent.putExtra("jsonKelas",jsonKelas);
                 intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) mengajar);
+                startActivity(intent);*/
+            }
+        });
+        MkAdapter mkAdapter =new MkAdapter(this, mengajar);
+        binding.recyclerView.setAdapter(mkAdapter);
+        mkAdapter.setCallback(new MkAdapter.Listener() {
+            @Override
+            public void setOnClick(String idMk) {
+                String json = new Gson().toJson(kelas);
+                Intent intent = new Intent(MainActivity.this, PilihKelasActivity.class);
+                intent.putExtra("idMk",idMk);
+                intent.putExtra("json",json);
                 startActivity(intent);
             }
         });
-        binding.recyclerView.setAdapter(new kelasAdapter(this, mengajar));
     }
 
     private void setProfile(Home.Profile profile) {

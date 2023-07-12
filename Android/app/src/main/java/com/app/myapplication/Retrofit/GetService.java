@@ -6,6 +6,7 @@ import com.app.myapplication.Model.DetailKelas;
 import com.app.myapplication.Model.Home;
 import com.app.myapplication.Model.Post;
 import com.app.myapplication.Model.Rekap;
+import com.app.myapplication.Model.RekapPertemuan;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,8 @@ public interface GetService {
     Call<Post> postAbsen(@Field("Pertemuan") String pertemuan,
                          @Field("Tanggal") String Tanggal,
                          @Field("Id_mk") String Id_mk,
-                         @Field("Jsonlist") String jsonlist);
+                         @Field("Jsonlist") String jsonlist,
+                         @Field("Id_kelas") String Id_kelas);
 
     @GET("absen.php")
     Call<List<Absen>> getAbsen(@Query("pertemuan") String pertemuan,
@@ -65,5 +67,13 @@ public interface GetService {
     Call<List<Rekap>> getRekap(
             @Query("idMk") String idMk,
             @Query("date1") String date1,
-            @Query("date2") String date2);
+            @Query("date2") String date2,
+            @Query("idKelas") String idKelas);
+
+
+
+    @GET("rekap_pertemuan.php")
+    Call<List<RekapPertemuan>> getRekapPertemuan(
+            @Query("idMk") String idMk,
+            @Query("idKelas") String idKelas);
 }

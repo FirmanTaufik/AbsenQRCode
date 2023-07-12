@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    app:cardUseCompatPadding="true"
+<androidx.cardview.widget.CardView app:cardUseCompatPadding="true"
     app:cardElevation="5dp"
     app:cardCornerRadius="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,36 +7,41 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:tint="@color/green_200"
-            android:id="@+id/image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_group"
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
+
         <LinearLayout
-            android:layout_gravity="center_vertical"
+            android:padding="10dp"
             android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content">
+
             <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:id="@+id/txtNama"
-                style="@style/TextAppearance.AppCompat.SearchResult.Title"
-                android:text="@string/app_name"
+                android:textStyle="bold"
                 android:textColor="@color/green_200"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:id="@+id/txtSemester"
-                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_marginTop="10dp"
+                android:textSize="15dp"
+                android:id="@+id/txtNim"
+                style="@style/TextAppearance.AppCompat.SearchResult.Title"
                 android:text="@string/app_name"
                 android:textColor="@android:color/darker_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <ImageButton
+            android:id="@+id/img_delete"
+            android:layout_marginRight="10dp"
+            android:tint="@android:color/holo_red_dark"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

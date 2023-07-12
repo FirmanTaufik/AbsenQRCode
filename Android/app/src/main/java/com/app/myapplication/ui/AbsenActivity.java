@@ -1,8 +1,11 @@
 package com.app.myapplication.ui;
 
+import static com.app.myapplication.Retrofit.ApiClient.BASE_URL_IMAGE;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +21,8 @@ import com.app.myapplication.R;
 import com.app.myapplication.Retrofit.ApiClient;
 import com.app.myapplication.Retrofit.GetService;
 import com.app.myapplication.databinding.ActivityAbsenBinding;
+import com.app.myapplication.databinding.DialogMahasiswaBinding;
 import com.app.myapplication.helper.Utils;
-import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.karumi.dexter.Dexter;
@@ -36,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class AbsenActivity extends AppCompatActivity {
     private IntentIntegrator intentIntegrator;
     private MahasiswaAdapter mahasiswaAdapter;
     private ArrayList<Mahasiswa> list = new ArrayList<>();
+    private String idKelas ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class AbsenActivity extends AppCompatActivity {
         binding = ActivityAbsenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        idKelas =getIntent().getStringExtra("idKelas");
         binding.toolbar.setTitle("Pertemuan Ke " + getIntent().getStringExtra("pertemuan"));
         initRv();
         initOnclick();
@@ -70,10 +74,10 @@ public class AbsenActivity extends AppCompatActivity {
                     public void onResponse(Call<List<Absen>> call, Response<List<Absen>> response) {
                         if (response.isSuccessful()) {
                             for (Absen res : response.body()) {
-                                Mahasiswa mahasiswa = new Mahasiswa();
-                                mahasiswa.setIdMhs(res.getIdMhs());
+                                Mahasiswa mahasiswa = Utils.getMahasiswa(res.getIdMhs(),idKelas);
+                               /* mahasiswa.setIdMhs(res.getIdMhs());
                                 mahasiswa.setNama(res.getNama());
-                                mahasiswa.setNim(res.getNim());
+                                mahasiswa.setNim(res.getNim());*/
                                 list.add(mahasiswa);
                             }
                             mahasiswaAdapter.notifyDataSetChanged();
@@ -99,6 +103,24 @@ public class AbsenActivity extends AppCompatActivity {
                     list.remove(position);
                     mahasiswaAdapter.notifyDataSetChanged();
                 });
+            }
+
+            @Override
+            public void ShowProfile(Mahasiswa data) {
+                data = Utils.getMahasiswa(data.getIdMhs(), idKelas);
+                DialogMahasiswaBinding view = DialogMahasiswaBinding.inflate(getLayoutInflater());
+                AlertDialog.Builder builder = new AlertDialog.Builder(AbsenActivity.this);
+                builder.setView(view.getRoot());
+                if (data.getFoto() == null || data.getFoto().equals("null"))
+                    view.image.setImageResource(R.drawable.ic_person);
+                else Utils.loadImage(BASE_URL_IMAGE+data.getFoto(), view.image);
+
+                view.textViewTanggalLahir.setText(data.getTempatTglLhr());
+                view.textViewNama.setText(data.getNama());
+                view.textViewNim.setText("NIM : "+data.getNim());
+                view.textViewJurusan.setText(data.getJurusan());
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.show();
             }
         });
     }
@@ -147,12 +169,12 @@ public class AbsenActivity extends AppCompatActivity {
         if (Result != null) {
             if (Result.getContents() != null) {
                 Log.d(TAG, "onActivityResult: " + Result.getContents());
-                Mahasiswa mahasiswa = Utils.getMahasiswa(Result.getContents());
+                Mahasiswa mahasiswa = Utils.getMahasiswa(Result.getContents(), idKelas);
                 if (mahasiswa.getIdMhs() != null) {
                     list.add(mahasiswa);
                     Collections.reverse(list);
                     mahasiswaAdapter.notifyDataSetChanged();
-                }
+                } else  Utils.showToast(AbsenActivity.this, "tidak di temukan, Mahasiswa tersebut tidak terdaftar di kelas ini");
 
             }
         } else {
@@ -188,7 +210,7 @@ public class AbsenActivity extends AppCompatActivity {
                 else stringBuilder.append(list.get(i).getIdMhs() + ",");
             }
             ApiClient.getRetrofitInstance().create(GetService.class)
-                    .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString())
+                    .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString(),idKelas )
                     .enqueue(new Callback<Post>() {
                         @Override
                         public void onResponse(Call<Post> call, Response<Post> response) {

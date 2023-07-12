@@ -3,8 +3,9 @@ package com.app.myapplication.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Mahasiswa {
+import java.util.List;
 
+public class RekapPertemuan {
 
     @SerializedName("id_mhs")
     @Expose
@@ -27,12 +28,9 @@ public class Mahasiswa {
     @SerializedName("id_kelas")
     @Expose
     private String idKelas;
-    @SerializedName("Nama_Kelas")
+    @SerializedName("Pertemuan")
     @Expose
-    private String namaKelas;
-    @SerializedName("Tahun_ajaran")
-    @Expose
-    private String tahunAjaran;
+    private List<Boolean> pertemuan;
 
     public String getIdMhs() {
         return idMhs;
@@ -90,20 +88,11 @@ public class Mahasiswa {
         this.idKelas = idKelas;
     }
 
-    public String getNamaKelas() {
-        return namaKelas;
+    public List<Boolean> getPertemuan() {
+        return pertemuan;
     }
 
-    public void setNamaKelas(String namaKelas) {
-        this.namaKelas = namaKelas;
+    public void setPertemuan(List<Boolean> pertemuan) {
+        this.pertemuan = pertemuan;
     }
-
-    public String getTahunAjaran() {
-        return tahunAjaran;
-    }
-
-    public void setTahunAjaran(String tahunAjaran) {
-        this.tahunAjaran = tahunAjaran;
-    }
-
 }

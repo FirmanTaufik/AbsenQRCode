@@ -18,6 +18,9 @@ public class Home {
     @Expose
     private List<Mengajar> mengajar;
 
+    @SerializedName("kelas")
+    @Expose
+    private List<Kela> kelas;
     public Profile getProfile() {
         return profile;
     }
@@ -32,6 +35,53 @@ public class Home {
 
     public void setMengajar(List<Mengajar> mengajar) {
         this.mengajar = mengajar;
+    }
+
+
+
+    public List<Kela> getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(List<Kela> kelas) {
+        this.kelas = kelas;
+    }
+
+    public class Kela {
+
+        @SerializedName("id_kelas")
+        @Expose
+        private String idKelas;
+        @SerializedName("Nama_Kelas")
+        @Expose
+        private String namaKelas;
+        @SerializedName("Tahun_ajaran")
+        @Expose
+        private String tahunAjaran;
+
+        public String getIdKelas() {
+            return idKelas;
+        }
+
+        public void setIdKelas(String idKelas) {
+            this.idKelas = idKelas;
+        }
+
+        public String getNamaKelas() {
+            return namaKelas;
+        }
+
+        public void setNamaKelas(String namaKelas) {
+            this.namaKelas = namaKelas;
+        }
+
+        public String getTahunAjaran() {
+            return tahunAjaran;
+        }
+
+        public void setTahunAjaran(String tahunAjaran) {
+            this.tahunAjaran = tahunAjaran;
+        }
     }
 
     public class Profile {
@@ -93,6 +143,7 @@ public class Home {
         }
 
     }
+
     public static  class Mengajar implements Parcelable {
 
         @SerializedName("id_mk")
@@ -107,24 +158,12 @@ public class Home {
         @SerializedName("id_dosen")
         @Expose
         private String idDosen;
-        @SerializedName("Nama_dosen")
-        @Expose
-        private String namaDosen;
-        @SerializedName("id_kelas")
-        @Expose
-        private String idKelas;
-        @SerializedName("nama_kelas")
-        @Expose
-        private String namaKelas;
 
         protected Mengajar(Parcel in) {
             idMk = in.readString();
             namaMk = in.readString();
             kodeMk = in.readString();
             idDosen = in.readString();
-            namaDosen = in.readString();
-            idKelas = in.readString();
-            namaKelas = in.readString();
         }
 
         public static final Creator<Mengajar> CREATOR = new Creator<Mengajar>() {
@@ -171,29 +210,6 @@ public class Home {
             this.idDosen = idDosen;
         }
 
-        public String getNamaDosen() {
-            return namaDosen;
-        }
-
-        public void setNamaDosen(String namaDosen) {
-            this.namaDosen = namaDosen;
-        }
-
-        public String getIdKelas() {
-            return idKelas;
-        }
-
-        public void setIdKelas(String idKelas) {
-            this.idKelas = idKelas;
-        }
-
-        public String getNamaKelas() {
-            return namaKelas;
-        }
-
-        public void setNamaKelas(String namaKelas) {
-            this.namaKelas = namaKelas;
-        }
 
         @Override
         public int describeContents() {
@@ -206,9 +222,6 @@ public class Home {
             dest.writeString(namaMk);
             dest.writeString(kodeMk);
             dest.writeString(idDosen);
-            dest.writeString(namaDosen);
-            dest.writeString(idKelas);
-            dest.writeString(namaKelas);
         }
     }
 }

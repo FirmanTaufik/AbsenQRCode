@@ -7,8 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.RekapActivity">
+    android:layout_height="match_parent" >
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -37,7 +36,6 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_tgl"
         android:layout_marginTop="15dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="Masukan Tanggal"

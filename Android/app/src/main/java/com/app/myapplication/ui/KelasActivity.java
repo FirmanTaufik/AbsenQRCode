@@ -28,12 +28,14 @@ import retrofit2.Response;
 public class KelasActivity extends AppCompatActivity {
     private String TAG ="KelasActivityTAG";
     private ActivityKelasBinding binding;
+    private String idKelas ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding =ActivityKelasBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        idKelas =getIntent().getStringExtra("idKelas");
         initOnClick();
     }
 
@@ -78,6 +80,7 @@ public class KelasActivity extends AppCompatActivity {
                         intent.putExtra("pertemuan", view1.edtPertemuan.getText().toString());
                         intent.putExtra("tanggal", view1.edtTgl.getText().toString());
                         intent.putExtra("idMk", idMk);
+                        intent.putExtra("idKelas", idKelas);
                         startActivity(intent);
                     }
                 });
@@ -118,6 +121,7 @@ public class KelasActivity extends AppCompatActivity {
                 intent.putExtra("pertemuan", pertemuan.getPertemuan());
                 intent.putExtra("tanggal", pertemuan.getTanggal());
                 intent.putExtra("idMk", pertemuan.getIdMk());
+                intent.putExtra("idKelas", idKelas);
                 intent.putExtra("isEdit",true);
                 startActivity(intent);
             }
