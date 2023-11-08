@@ -14,10 +14,7 @@ where pertemuan = '$pertemuan' and Id_mk = '$idMk'
 
 $w = mysqli_query($conn, $query);
 $data = array();
-while ($row = mysqli_fetch_object($w)) {
-
-
-
+while ($row = mysqli_fetch_object($w)) { 
     $data[] = $row;
 }
 

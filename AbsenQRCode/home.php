@@ -4,28 +4,30 @@ header('Content-Type: application/json; charset=utf-8');
 include "+connection.php";
 $id_dosen = mysqli_real_escape_string($conn, $_GET['id_dosen']);
 
-$query = "SELECT tb_mk.id_mk, tb_mk.Nama_mk, tb_mk.Kode_mk, 
-tb_mk.id_dosen, tb_dosen.Nama_dosen, tb_mk.id_kelas, tb_kelas.nama_kelas
-	FROM tb_mk
-	LEFT JOIN tb_dosen on
-	tb_dosen.id_dosen = tb_mk.id_dosen
-	LEFT JOIN tb_kelas on
-	tb_kelas.id_kelas = tb_mk.id_kelas
+$query = "SELECT  *FROM tb_mk 
 	WHERE tb_mk.id_dosen = '$id_dosen'
 	GROUP BY tb_mk.id_mk";
 
 $w = mysqli_query($conn, $query);
 $data = array();
-while ($row = mysqli_fetch_object($w  )) {
-
-
+while ($row = mysqli_fetch_object($w  )) { 
 
     $data[] = $row;
+}
+
+$query = "SELECT  *FROM tb_kelas   ";
+
+$wkelas = mysqli_query($conn, $query);
+$kelas = array();
+while ($row = mysqli_fetch_object($wkelas  )) { 
+
+    $kelas[] = $row;
 }
 
 $id = mysqli_fetch_assoc(mysqli_query($conn, "SELECT*FROM tb_dosen WHERE id_dosen = '$id_dosen'  "));
  $object = new stdClass();
  $object ->profile = $id;
  $object ->mengajar = $data;
+ $object ->kelas = $kelas;
 echo json_encode($object);
 mysqli_close($conn);

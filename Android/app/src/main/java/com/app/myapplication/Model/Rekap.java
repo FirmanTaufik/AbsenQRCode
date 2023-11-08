@@ -36,6 +36,11 @@ public class Rekap {
     @Expose
     private Object foto;
 
+    @SerializedName("Status")
+    @Expose
+    private String Status;
+
+
     public String getIdPresensi() {
         return idPresensi;
     }
@@ -116,4 +121,11 @@ public class Rekap {
         this.foto = foto;
     }
 
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
 }

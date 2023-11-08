@@ -3,12 +3,17 @@ package com.app.myapplication.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Mahasiswa {
+public class SiswaKelas {
 
-
+    @SerializedName("id_mhs_kelas")
+    @Expose
+    private String idMhsKelas;
     @SerializedName("id_mhs")
     @Expose
     private String idMhs;
+    @SerializedName("id_kelas")
+    @Expose
+    private String idKelas;
     @SerializedName("NIM")
     @Expose
     private String nim;
@@ -21,23 +26,18 @@ public class Mahasiswa {
     @SerializedName("Jurusan")
     @Expose
     private String jurusan;
+
     @SerializedName("Foto")
     @Expose
     private Object foto;
-    @SerializedName("id_kelas")
-    @Expose
-    private String idKelas;
-    @SerializedName("Nama_Kelas")
-    @Expose
-    private String namaKelas;
-    @SerializedName("Tahun_ajaran")
-    @Expose
-    private String tahunAjaran;
 
-    @SerializedName("Status")
-    @Expose
-    private int Status;
+    public String getIdMhsKelas() {
+        return idMhsKelas;
+    }
 
+    public void setIdMhsKelas(String idMhsKelas) {
+        this.idMhsKelas = idMhsKelas;
+    }
 
     public String getIdMhs() {
         return idMhs;
@@ -45,6 +45,14 @@ public class Mahasiswa {
 
     public void setIdMhs(String idMhs) {
         this.idMhs = idMhs;
+    }
+
+    public String getIdKelas() {
+        return idKelas;
+    }
+
+    public void setIdKelas(String idKelas) {
+        this.idKelas = idKelas;
     }
 
     public String getNim() {
@@ -87,36 +95,5 @@ public class Mahasiswa {
         this.foto = foto;
     }
 
-    public String getIdKelas() {
-        return idKelas;
-    }
-
-    public void setIdKelas(String idKelas) {
-        this.idKelas = idKelas;
-    }
-
-    public String getNamaKelas() {
-        return namaKelas;
-    }
-
-    public void setNamaKelas(String namaKelas) {
-        this.namaKelas = namaKelas;
-    }
-
-    public String getTahunAjaran() {
-        return tahunAjaran;
-    }
-
-    public void setTahunAjaran(String tahunAjaran) {
-        this.tahunAjaran = tahunAjaran;
-    }
-
-    public int getStatus() {
-        return Status;
-    }
-
-    public void setStatus(int status) {
-        Status = status;
-    }
 
 }

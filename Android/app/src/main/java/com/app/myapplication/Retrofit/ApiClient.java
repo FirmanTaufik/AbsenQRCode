@@ -24,7 +24,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ApiClient {
     public static Context context = App.getContext();
     public static Retrofit retrofit;
-    public static   String BASE_URL = "http://192.168.100.11/AbsenQRCode/";
+    public static   String BASE_URL = "http://192.168.100.8/AbsenQRCode/";
     public static   String BASE_URL_IMAGE = BASE_URL+"images/";
 
     public static Retrofit getRetrofitInstance() {

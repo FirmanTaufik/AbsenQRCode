@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
+import android.util.Log;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 
 import com.app.myapplication.Model.Mahasiswa;
+import com.app.myapplication.Model.SiswaKelas;
 import com.app.myapplication.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -72,8 +74,50 @@ public class Utils {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static ArrayList<Mahasiswa> getMahasiswaByKelas(String idKelas) {
+        ArrayList<Mahasiswa> lisSiswa = new ArrayList<>();
+        Type listType = new TypeToken<List<SiswaKelas>>() {}.getType();
+        ArrayList<SiswaKelas> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
+        for (SiswaKelas siswaKelas: list ) {
+            if (siswaKelas.getIdKelas().equals(idKelas)) {
+                Mahasiswa mahasiswa = new Mahasiswa();
+                mahasiswa.setFoto(siswaKelas.getFoto());
+                mahasiswa.setNama(siswaKelas.getNama());
+                mahasiswa.setNim(siswaKelas.getNim());
+                mahasiswa.setIdMhs(siswaKelas.getIdMhs());
+                mahasiswa.setJurusan(siswaKelas.getJurusan());
+                mahasiswa.setTempatTglLhr(siswaKelas.getTempatTglLhr());
+                mahasiswa.setStatus(0);
+                lisSiswa.add(mahasiswa);
+            }
+            Log.i(  "getMahasiswaByKelas: ",siswaKelas.getIdMhs() +" "+idKelas);
+        }
+        return lisSiswa;
+    }
 
-    public static Mahasiswa getMahasiswa(String id, String idKelas){
+    public static Mahasiswa getMahasiswaKelas(String id, String idKelas){
+        Log.i(  "getMahasiswaKelas: ",id +" "+idKelas);
+        Type listType = new TypeToken<List<SiswaKelas>>() {}.getType();
+        ArrayList<SiswaKelas> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
+        for (SiswaKelas siswaKelas: list ) {
+            Log.i(  "getMahasiswaKelas: ",siswaKelas.getIdMhs() +" "+siswaKelas.getIdKelas());
+            if (Objects.equals(id, siswaKelas.getIdMhs())) {
+                if (Objects.equals(idKelas, siswaKelas.getIdKelas())) {
+                    Mahasiswa mahasiswa = new Mahasiswa();
+                    mahasiswa.setFoto(siswaKelas.getFoto());
+                    mahasiswa.setNama(siswaKelas.getNama());
+                    mahasiswa.setNim(siswaKelas.getNim());
+                    mahasiswa.setIdMhs(siswaKelas.getIdMhs());
+                    mahasiswa.setJurusan(siswaKelas.getJurusan());
+                    mahasiswa.setTempatTglLhr(siswaKelas.getTempatTglLhr());
+                    return mahasiswa;
+                }
+            }
+        }
+        return new Mahasiswa();
+    }
+
+ /*   public static Mahasiswa getMahasiswa(String id, String idKelas){
         Type listType = new TypeToken<List<Mahasiswa>>() {}.getType();
         ArrayList<Mahasiswa> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
         for (Mahasiswa mahasiswa: list ) {
@@ -84,7 +128,7 @@ public class Utils {
             }
         }
         return new Mahasiswa();
-    }
+    }*/
 
 
     public static void dialogDate(Context context, EditText editText){

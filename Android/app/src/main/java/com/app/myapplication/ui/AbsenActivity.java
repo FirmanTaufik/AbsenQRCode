@@ -38,6 +38,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,7 +75,7 @@ public class AbsenActivity extends AppCompatActivity {
                     public void onResponse(Call<List<Absen>> call, Response<List<Absen>> response) {
                         if (response.isSuccessful()) {
                             for (Absen res : response.body()) {
-                                Mahasiswa mahasiswa = Utils.getMahasiswa(res.getIdMhs(),idKelas);
+                                Mahasiswa mahasiswa = Utils.getMahasiswaKelas(res.getIdMhs(),idKelas);
                                /* mahasiswa.setIdMhs(res.getIdMhs());
                                 mahasiswa.setNama(res.getNama());
                                 mahasiswa.setNim(res.getNim());*/
@@ -93,6 +94,10 @@ public class AbsenActivity extends AppCompatActivity {
     }
 
     private void initRv() {
+        if (!getIntent().hasExtra("isEdit")) {
+            list = Utils.getMahasiswaByKelas(idKelas);
+        }
+
         mahasiswaAdapter = new MahasiswaAdapter(AbsenActivity.this, list);
         binding.recyclerView.setAdapter(mahasiswaAdapter);
         mahasiswaAdapter.setListener(new MahasiswaAdapter.Listener() {
@@ -107,7 +112,7 @@ public class AbsenActivity extends AppCompatActivity {
 
             @Override
             public void ShowProfile(Mahasiswa data) {
-                data = Utils.getMahasiswa(data.getIdMhs(), idKelas);
+                data = Utils.getMahasiswaKelas(data.getIdMhs(), idKelas);
                 DialogMahasiswaBinding view = DialogMahasiswaBinding.inflate(getLayoutInflater());
                 AlertDialog.Builder builder = new AlertDialog.Builder(AbsenActivity.this);
                 builder.setView(view.getRoot());
@@ -123,6 +128,7 @@ public class AbsenActivity extends AppCompatActivity {
                 mAlertDialog.show();
             }
         });
+        mahasiswaAdapter.notifyDataSetChanged();
     }
 
     private void initOnclick() {
@@ -169,8 +175,10 @@ public class AbsenActivity extends AppCompatActivity {
         if (Result != null) {
             if (Result.getContents() != null) {
                 Log.d(TAG, "onActivityResult: " + Result.getContents());
-                Mahasiswa mahasiswa = Utils.getMahasiswa(Result.getContents(), idKelas);
+                Mahasiswa mahasiswa = Utils.getMahasiswaKelas(Result.getContents(), idKelas);
                 if (mahasiswa.getIdMhs() != null) {
+                    detectReplace(mahasiswa);
+                    mahasiswa.setStatus(1);
                     list.add(mahasiswa);
                     Collections.reverse(list);
                     mahasiswaAdapter.notifyDataSetChanged();
@@ -179,6 +187,20 @@ public class AbsenActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void detectReplace(Mahasiswa mahasiswa) {
+        boolean isFound =false;
+        int index = 0;
+        for (int i = 0; i <list.size() ; i++) {
+            if (Objects.equals(mahasiswa.getIdMhs(), list.get(i).getIdMhs())) {
+                index=i;
+                isFound =true;
+            }
+        }
+        if (isFound) {
+            list.remove(index);
         }
     }
 
@@ -205,12 +227,21 @@ public class AbsenActivity extends AppCompatActivity {
             String idMk = getIntent().getStringExtra("idMk");
             String tanggal = getIntent().getStringExtra("tanggal");
             StringBuilder stringBuilder = new StringBuilder();
+
             for (int i = 0; i < list.size(); i++) {
                 if (i == list.size() - 1) stringBuilder.append(list.get(i).getIdMhs());
                 else stringBuilder.append(list.get(i).getIdMhs() + ",");
             }
+
+            StringBuilder stringBuilderStatus = new StringBuilder();
+
+            for (int i = 0; i < list.size(); i++) {
+                if (i == list.size() - 1) stringBuilderStatus.append(list.get(i).getStatus());
+                else stringBuilderStatus.append(list.get(i).getStatus() + ",");
+            }
+
             ApiClient.getRetrofitInstance().create(GetService.class)
-                    .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString(),idKelas )
+                    .postAbsen(pertemuan, tanggal, idMk, stringBuilder.toString(),idKelas ,stringBuilderStatus.toString())
                     .enqueue(new Callback<Post>() {
                         @Override
                         public void onResponse(Call<Post> call, Response<Post> response) {

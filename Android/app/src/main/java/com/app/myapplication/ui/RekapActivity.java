@@ -57,8 +57,7 @@ public class RekapActivity extends AppCompatActivity {
 
     private void initUi() {
         if (getIntent().hasExtra("isRekapPertemuan")) binding.inputTgl.setVisibility(View.GONE);
-        Type listTypekelas = new TypeToken<List<Home.Kela>>() {
-        }.getType();
+        Type listTypekelas = new TypeToken<List<Home.Kela>>() {  }.getType();
         ArrayList<Home.Kela> listKelas = new Gson().fromJson(getIntent().getStringExtra("jsonKelas"), listTypekelas);
         String[] itemKelas = new String[listKelas.size()];
 
@@ -277,6 +276,7 @@ public class RekapActivity extends AppCompatActivity {
                 "            <td>NIM</td>\n" +
                 "            <td style=\"width:500px\">Nama Mahasiswa</td>\n" +
                 "            <td>Jurusan</td>\n" +
+                "            <td>Status</td>\n" +
                 "        </tr>\n";
         stringBuilder.append(body);
         int baris = 0;
@@ -288,6 +288,7 @@ public class RekapActivity extends AppCompatActivity {
                     "            <td>" + l.getNim() + "</td>\n" +
                     "            <td>" + l.getNama() + "</td>\n" +
                     "            <td>" + l.getJurusan() + "</td>\n" +
+                    "            <td>" + getStatus(Integer.valueOf(l.getStatus())) + "</td>\n" +
                     "        </tr>\n");
 
         }
@@ -316,5 +317,24 @@ public class RekapActivity extends AppCompatActivity {
         binding.webView.setScrollbarFadingEnabled(false);
         binding.webView.loadData(stringBuilder.toString(), "text/HTML", "UTF-8");
 
+    }
+
+    private String getStatus(int status){
+        String[] arraySpinner = new String[] {
+                "Tanpa Keterangan",    "Ijin", "Sakit", "Hadir"
+        };
+
+        int pos = 2;
+        if (status == 1 ){
+            pos =  3;
+        }
+        if (status == 3 ){
+            pos =  1;
+        }
+
+        if (status==0) {
+            pos =  0;
+        }
+        return arraySpinner[pos];
     }
 }
