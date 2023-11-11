@@ -27,6 +27,46 @@ public class Absen {
     @Expose
     private String nama;
 
+
+
+    @SerializedName("Foto")
+    @Expose
+    private String Foto;
+
+    public String getFoto() {
+        return Foto;
+    }
+
+    public void setFoto(String foto) {
+        Foto = foto;
+    }
+
+    public String getTempat_Tgl_Lhr() {
+        return Tempat_Tgl_Lhr;
+    }
+
+    public void setTempat_Tgl_Lhr(String tempat_Tgl_Lhr) {
+        Tempat_Tgl_Lhr = tempat_Tgl_Lhr;
+    }
+
+    @SerializedName("Tempat_Tgl_Lhr")
+    @Expose
+    private String Tempat_Tgl_Lhr;
+
+    public String getJurusan() {
+        return Jurusan;
+    }
+
+    public void setJurusan(String jurusan) {
+        Jurusan = jurusan;
+    }
+
+    @SerializedName("Jurusan")
+    @Expose
+    private String Jurusan;
+
+
+
     public String getIdPresensi() {
         return idPresensi;
     }

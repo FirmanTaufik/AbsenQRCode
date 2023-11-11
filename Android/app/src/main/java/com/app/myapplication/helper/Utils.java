@@ -96,13 +96,13 @@ public class Utils {
     }
 
     public static Mahasiswa getMahasiswaKelas(String id, String idKelas){
-        Log.i(  "getMahasiswaKelas: ",id +" "+idKelas);
+       // Log.i(  "getMahasiswaKelas: ",id +" "+idKelas);
         Type listType = new TypeToken<List<SiswaKelas>>() {}.getType();
         ArrayList<SiswaKelas> list = new Gson().fromJson(getAllMahasiswaJson(App.getContext()),listType);
         for (SiswaKelas siswaKelas: list ) {
-            Log.i(  "getMahasiswaKelas: ",siswaKelas.getIdMhs() +" "+siswaKelas.getIdKelas());
             if (Objects.equals(id, siswaKelas.getIdMhs())) {
                 if (Objects.equals(idKelas, siswaKelas.getIdKelas())) {
+                    Log.i(  "getMahasiswaKelas: ",siswaKelas.getJurusan() +" "+siswaKelas.getIdKelas());
                     Mahasiswa mahasiswa = new Mahasiswa();
                     mahasiswa.setFoto(siswaKelas.getFoto());
                     mahasiswa.setNama(siswaKelas.getNama());

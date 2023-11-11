@@ -24,7 +24,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ApiClient {
     public static Context context = App.getContext();
     public static Retrofit retrofit;
-    public static   String BASE_URL = "http://192.168.100.8/AbsenQRCode/";
+    public static   String BASE_URL = "http://192.168.8.153/AbsenQRCode/";
     public static   String BASE_URL_IMAGE = BASE_URL+"images/";
 
     public static Retrofit getRetrofitInstance() {
@@ -48,9 +48,9 @@ public class ApiClient {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         Integer cacheSize = (5 * 1024 * 1024);
-        Cache myCache = new Cache(context.getCacheDir(), cacheSize);
+       // Cache myCache = new Cache(context.getCachekir(), cacheSize);
         return new OkHttpClient.Builder()
-                .cache(myCache)
+        //        .cache(myCache)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .writeTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)

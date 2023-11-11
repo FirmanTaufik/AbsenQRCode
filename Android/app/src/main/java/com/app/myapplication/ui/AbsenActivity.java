@@ -76,9 +76,13 @@ public class AbsenActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             for (Absen res : response.body()) {
                                 Mahasiswa mahasiswa = Utils.getMahasiswaKelas(res.getIdMhs(),idKelas);
-                               /* mahasiswa.setIdMhs(res.getIdMhs());
+                                mahasiswa.setIdMhs(res.getIdMhs());
                                 mahasiswa.setNama(res.getNama());
-                                mahasiswa.setNim(res.getNim());*/
+                                mahasiswa.setNim(res.getNim());
+                                mahasiswa.setFoto(res.getFoto());
+                                mahasiswa.setTempatTglLhr(res.getTempat_Tgl_Lhr());
+                                mahasiswa.setJurusan(res.getJurusan());
+                                System.out.println("onRessss "+mahasiswa.getJurusan());
                                 list.add(mahasiswa);
                             }
                             mahasiswaAdapter.notifyDataSetChanged();

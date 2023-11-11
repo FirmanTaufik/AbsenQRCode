@@ -6,7 +6,9 @@ include "+connection.php";
 $pertemuan = mysqli_real_escape_string($conn, $_GET['pertemuan']);
 $idMk = mysqli_real_escape_string($conn, $_GET['idMk']);
 
-$query = "SELECT  tb_presensi.*, tb_mhs.id_mhs, tb_mhs.NIM,tb_mhs.Nama
+$query = "SELECT  tb_presensi.*, tb_mhs.id_mhs, tb_mhs.NIM,tb_mhs.Nama,tb_mhs.Foto, 
+tb_mhs.Jurusan, 
+tb_mhs.Tempat_Tgl_Lhr
 FROM tb_presensi
 LEFT JOIN tb_mhs ON tb_mhs.id_mhs = tb_presensi.Id_mhs
 where pertemuan = '$pertemuan' and Id_mk = '$idMk'

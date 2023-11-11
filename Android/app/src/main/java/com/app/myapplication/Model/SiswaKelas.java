@@ -29,7 +29,7 @@ public class SiswaKelas {
 
     @SerializedName("Foto")
     @Expose
-    private Object foto;
+    private String foto;
 
     public String getIdMhsKelas() {
         return idMhsKelas;
@@ -87,11 +87,11 @@ public class SiswaKelas {
         this.jurusan = jurusan;
     }
 
-    public Object getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(Object foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
